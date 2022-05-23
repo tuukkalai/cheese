@@ -5,13 +5,17 @@ from django.urls import reverse
 from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from .models import Question, Choice
 
 
 def index(request):
-	latest_question_list = Question.objects.order_by('-pub_date')[:5]
-	return render(request, 'polls/index.html', {'latest_question_list': latest_question_list})
+	print(request.user.is_authenticated)
+	if request.user.is_authenticated:
+		latest_question_list = Question.objects.order_by('-pub_date')[:5]
+		return render(request, 'polls/index.html', {'latest_question_list': latest_question_list})
+	return HttpResponseRedirect('login')
 
 def detail(request, question_id):
 	question = get_object_or_404(Question, pk=question_id)
@@ -20,6 +24,10 @@ def detail(request, question_id):
 def results(request, question_id):
 	question = get_object_or_404(Question, pk=question_id)
 	return render(request, 'polls/results.html', {'question': question})
+
+@login_required
+def create(request):
+	return render(request, 'polls/create_question.html')
 
 @csrf_exempt
 def vote(request, question_id):
@@ -57,20 +65,18 @@ def vote(request, question_id):
 @csrf_exempt
 def question(request, question_id=-1):
 	if request.method == 'POST':
-		body_unicode = request.body.decode('utf-8')
-		body = json.loads(body_unicode)
-		question = body['question']
+		question = request.POST.get('questionField')
 
 		new_question = Question.objects.create(
 			question_text=question,
 			pub_date=timezone.now()
 		)
-
 		# query = "INSERT INTO polls_question (question_text, pub_date) " \
 			# "VALUES ('" + question + "', '" + str(timezone.now()) + "');"
 		# new_question = Question.objects.raw(query)
 
 		return redirect('/')
+
 	if request.method == 'GET':
 		"""
 		SQL Injection.

@@ -16,8 +16,9 @@
         <div class="container">
             <a class="logo" href="{% url 'polls:index' %}">🧀</a>
             <ul class="navigation-list float-right">
+                <li><a class="button" href="{% url 'polls:create' %}">Create poll</a></li>
                 <li><a class="button" href="{% url 'polls:index' %}">Home</a></li>
-                <li><a class="button" href="{% url 'admin:index' %}">Login</a></li>
+                <li><a class="button" href="{% url 'user:login' %}">Login</a></li>
             </ul>
         </div>
     </nav>

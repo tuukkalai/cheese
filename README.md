@@ -9,6 +9,12 @@ Ths project is part of University of Helsinki course ["Cyber Security Base"](htt
 - Introduce security flaws in software
 - Provide steps to fix them
 
+```text
+Testing
+Username: bob
+Password: squarepants
+```
+
 ## Checklist
 
 - [ ] Five different flaws from OWASP Top ten list (selected 2021 list)
@@ -32,6 +38,9 @@ To fix this issue,
   4. add `SECRET_KEY` to environmental variables in production system
 
 FLAW 1:
+SQL Injection
+polls > views > question()
+
 exact source link pinpointing flaw 1...
 description of flaw 1...
 how to fix it...

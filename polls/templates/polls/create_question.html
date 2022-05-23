@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="{% url 'polls:question' %}" method="POST">
+    {# {% csrf_token %} #}
+    <fieldset>
+        <label for="questionField">Question</label>
+        <input type="text" placeholder="Where are we going?" id="questionField" name="questionField" />
+        <input class="button-primary" type="submit" value="Create question">
+    </fieldset>
+</form>
+{% endblock %}
