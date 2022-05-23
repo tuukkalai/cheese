@@ -2,7 +2,7 @@
 
 Ths project is part of University of Helsinki course ["Cyber Security Base"](https://cybersecuritybase.mooc.fi/). The aim of this repository is to create an application with multiple security holes.
 
-<font color="red">!! Do not use this repository as a template for your next Django-application !!</font>
+!! Do not use this repository as a template for your next Django-application !!
 
 ## Short description
 
@@ -11,10 +11,10 @@ Ths project is part of University of Helsinki course ["Cyber Security Base"](htt
 
 ## Checklist
 
-- [] Five different flaws from OWASP Top ten list (selected 2021 list)
+- [ ] Five different flaws from OWASP Top ten list (selected 2021 list)
 - [x] Application should have a backend (Python + Django)
 - [x] Saved to public repo
-- [] 1000 word report
+- [ ] 1000 word report
 
 ### Report structure
 
