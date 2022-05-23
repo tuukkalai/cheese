@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ question.question_text }}</h1>
+{% if question.choice_set.count > 0 %}
+<table>
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th># of votes</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for choice in question.choice_set.all %}
+        <tr>
+            <td>{{ choice.choice_text }}</td><td>{{ choice.votes }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No choices for this question</p>
+{% endif %}
+<a href="{% url 'polls:detail' question.id %}">Vote again</a>
+{% endblock %}

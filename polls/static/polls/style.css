@@ -1,0 +1,50 @@
+body {
+	color: #555;
+}
+
+a {
+	color: #af991b;
+}
+
+nav {
+	background-color: #f7e8bd;
+	border-bottom: .1rem solid #e2b83b;
+	height: 6rem;
+	margin-bottom: 1rem;
+}
+
+nav .logo {
+	font-size: 3.8rem;
+	padding-left: 1rem;
+}
+
+nav .logo:hover {
+	border: 0.4rem solid #daba0b;
+	border-radius: 1rem;
+	padding-left: 0.6rem;
+	padding-right: 0.6rem;
+}
+
+nav .navigation-list {
+	list-style-type: none;
+	padding-top: 1rem;
+}
+
+nav .navigation-list > li {
+	display: inline;
+	margin-top: 10px;
+}
+
+.button, button, input[type="button"], input[type="reset"], input[type="submit"] {
+	background-color: #af991b;
+	border: 0.1rem solid #8d7a10;
+}
+
+.button:focus, .button:hover, button:focus, button:hover, input[type="button"]:focus, input[type="button"]:hover, input[type="reset"]:focus, input[type="reset"]:hover, input[type="submit"]:focus, input[type="submit"]:hover {
+    background-color: #807f50;
+    border-color: #58583f;
+}
+
+.label-inline {
+	cursor: pointer;
+}
