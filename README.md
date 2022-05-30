@@ -9,8 +9,13 @@ Ths project is part of University of Helsinki course ["Cyber Security Base"](htt
 - Introduce security flaws in software
 - Provide steps to fix them
 
+## Runnning the application and report
+
+[Report.md](./report.md)
+
+## Testing credentials
+
 ```text
-Testing
 Username: bob
 Password: squarepants
 ```
@@ -22,39 +27,12 @@ Password: squarepants
 - [x] Saved to public repo
 - [ ] 1000 word report
 
-### Report structure
+### Structure for report
 
 ```md
-LINK: link to the repository
-installation instructions if needed
-
-FLAW 0 (example):
-[Settings include exposed environmental variable `SECRET_KEY`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L26)
-Exposed environmental secret can be seen as a [Cryptographic failure](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/). The value is not exposed within the application, but with searching the web with couple of keywords attacker might find this repository and use the key to gain control of the complete application.
-To fix this issue,
-  1. import dotenv package ([Uncomment import](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L15))
-  2. save the `SECRET_KEY` to `.env`-file
-  3. add `.env`-file to `.gitignore`
-  4. add `SECRET_KEY` to environmental variables in production system
-
-FLAW 1:
-SQL Injection
-polls > views > question()
-
-exact source link pinpointing flaw 1...
-description of flaw 1...
-how to fix it...
-
 FLAW 2:
 exact source link pinpointing flaw 2...
 description of flaw 2...
-how to fix it...
-
-...
-
-FLAW 5:
-exact source link pinpointing flaw 5...
-description of flaw 5...
 how to fix it...
 ```
 

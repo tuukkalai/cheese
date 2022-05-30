@@ -6,15 +6,41 @@
     <p><em>It's called Cheese, not because it's only about cheese. It's called Cheese because of the holes!</em></p>
 </blockquote>
 <p>Select poll from the listing and vote.</p>
-{% if latest_question_list %}
-    <h2>Polls</h2>
+
+{% if user.username == 'admin' %}
+    <h2>All polls</h2>
+    {% if question_list %}
     <ul>
-    {% for question in latest_question_list %}
+    {% for question in question_list %}
+        {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
+        <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endif %}
+
+<h2>User's Polls</h2>
+{% if users_questions %}
+    <ul>
+    {% for question in users_questions %}
         {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
         <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No polls available.</p>
 {% endif %}
+
+<hr />
+
+<h2>Create new poll</h2>
+<form action="{% url 'polls:question' %}" method="POST">
+    {# {% csrf_token %} #}
+    <fieldset>
+        <label for="questionField">Question</label>
+        <input type="text" placeholder="Ham or cheese on top?" id="questionField" name="questionField" />
+        <input type="hidden" name="username" value="{{ user.username }}" />
+        <input class="button-primary" type="submit" value="Create question" />
+    </fieldset>
+</form>
 {% endblock %}

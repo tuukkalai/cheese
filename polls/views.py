@@ -6,14 +6,22 @@ from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 
 from .models import Question, Choice
 
 
 def index(request):
 	if request.user.is_authenticated:
-		latest_question_list = Question.objects.order_by('-pub_date')[:5]
-		return render(request, 'polls/index.html', {'latest_question_list': latest_question_list, 'user': request.user})
+		users_questions = Question.objects.filter(owner__username = request.user.username)
+		question_list = Question.objects.all()
+		print(users_questions)
+		return render(request, 'polls/index.html', {
+			'question_list': question_list,
+			'user': request.user,
+			'users_questions': users_questions
+			})
 	return HttpResponseRedirect('login')
 
 def detail(request, question_id):
@@ -65,8 +73,10 @@ def vote(request, question_id):
 def question(request, question_id=-1):
 	if request.method == 'POST':
 		question = request.POST.get('questionField')
+		username = request.POST.get('username')
 
 		new_question = Question.objects.create(
+			owner=User.objects.get(username=username),
 			question_text=question,
 			pub_date=timezone.now()
 		)
@@ -78,12 +88,12 @@ def question(request, question_id=-1):
 
 	if request.method == 'GET':
 		"""
-		SQL Injection.
+		Flaw #1: SQL Injection.
 		Adding query directly with raw-method and insecure way of adding user input in query.
 
 		Question ID is extracted from URL and injected directly to query.
 		Following URL prints admin users password hash on the screen:
-		/question/2%20AND%201%3D2%20UNION%20SELECT%20username%2C%20password%2C%20id%20FROM%20auth_user%20WHERE%20is_superuser%3D1
+		http://127.0.0.1:8000/question/2%20AND%201%3D2%20UNION%20SELECT%20username,%20password,%20id,%20is_superuser%20FROM%20auth_user%20WHERE%20is_superuser%3D1/
 		"""
 		questions = Question.objects.raw("SELECT id, question_text, pub_date FROM polls_question;")
 		if question_id != -1:
