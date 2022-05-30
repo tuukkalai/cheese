@@ -11,10 +11,9 @@ from .models import Question, Choice
 
 
 def index(request):
-	print(request.user.is_authenticated)
 	if request.user.is_authenticated:
 		latest_question_list = Question.objects.order_by('-pub_date')[:5]
-		return render(request, 'polls/index.html', {'latest_question_list': latest_question_list})
+		return render(request, 'polls/index.html', {'latest_question_list': latest_question_list, 'user': request.user})
 	return HttpResponseRedirect('login')
 
 def detail(request, question_id):
