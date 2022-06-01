@@ -4,13 +4,12 @@
 <form action="{% url 'polls:vote' question.id %}" method="GET">
     {# {% csrf_token %} #}
     <h1>{{ question }}</h1>
-    <ul>
-        {% for choice in question.choice_set.all %}
-        <input type="radio" id="{{ choice.id }}" value="{{ choice.id }}" name="choice" />
-        <label class="label-inline" for="{{ choice.id }}">{{ choice.choice_text }}</label>
-        <br />
-        {% endfor %}
-    </ul>
+    {% for choice in question.choice_set.all %}
+    <input type="radio" id="{{ choice.id }}" value="{{ choice.id }}" name="choice" />
+    <label class="label-inline" for="{{ choice.id }}">{{ choice.choice_text }}</label>
+    <br />
+    {% endfor %}
+    <input type="hidden" name="username" value="{{ user.username }}">
     <input type="submit" value="Vote" />
 </form>
 {% endblock %}

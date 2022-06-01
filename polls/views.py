@@ -9,14 +9,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-from .models import Question, Choice
+from .models import Question, Choice, Vote
 
 
 def index(request):
 	if request.user.is_authenticated:
 		users_questions = Question.objects.filter(owner__username = request.user.username)
 		question_list = Question.objects.all()
-		print(users_questions)
 		return render(request, 'polls/index.html', {
 			'question_list': question_list,
 			'user': request.user,
@@ -37,11 +36,16 @@ def create(request):
 	return render(request, 'polls/create_question.html')
 
 @csrf_exempt
+@login_required
 def vote(request, question_id):
 	"""With get_object_or_404 an 404 error would be shown if Question with given id is not found."""
 	
 	# question = get_object_or_404(Question, pk=question_id)
 	question = Question.objects.get(pk=question_id)
+	voter = User.objects.get(pk=request.user.id)
+	print(voter)
+	if Vote.objects.get(user_id=voter, question_id=question):
+		print('---------------- yes -----------------------')
 
 	try:
 		"""
@@ -65,6 +69,7 @@ def vote(request, question_id):
 			'error_message': "You didn't select a choice.",
 		})
 	else:
+		# Avoiding race conditions with F
 		selected_choice.votes = F('votes') + 1
 		selected_choice.save()
 		return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
