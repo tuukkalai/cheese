@@ -16,7 +16,7 @@ def isloggedin(response):
 	return soup.title.text.startswith('Site administration')
 
 
-def test_password(address, candidates):
+def test_password(address: str, candidates: list):
 	address += '/admin/login/?next=/admin/'
 	s = requests.Session()
 	input_data = {}
@@ -33,8 +33,8 @@ def test_password(address, candidates):
 		if i % 10 == 0:
 			update_progress(i, len(candidates))
 	return None
-
-def update_progress(i: int, candidates: int) -> None:
+	
+def update_progress(i: int, candidates: int):
 	multiplier = 80
 	progress = int(i/int(candidates/multiplier))
 	print(f"{'#'*progress}{'-'*(multiplier-progress)} <{i} / {candidates}>", end="\r")

@@ -42,10 +42,13 @@ def vote(request, question_id):
 	
 	# question = get_object_or_404(Question, pk=question_id)
 	question = Question.objects.get(pk=question_id)
+	print(question)
 	voter = User.objects.get(pk=request.user.id)
 	print(voter)
-	if Vote.objects.get(user_id=voter, question_id=question):
-		print('---------------- yes -----------------------')
+	print(Choice.objects.get(pk=request.choice.id))
+
+	# if Vote.objects.get(user_id=voter, question_id=question):
+		# print('---------------- yes -----------------------')
 
 	try:
 		"""

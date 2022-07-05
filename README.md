@@ -15,10 +15,10 @@ Ths project is part of University of Helsinki course ["Cyber Security Base"](htt
 
 ## Testing credentials
 
-```text
-Username: bob
-Password: squarepants
-```
+|Username|Password|
+|:--|:--|
+|bob|squarepants|
+|alice|W0nderLand!|
 
 ## Checklist
 
