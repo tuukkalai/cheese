@@ -70,13 +70,14 @@ To test this, activate the virtual environment and run command (assuming the app
 python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-10000.txt
 ```
 
-The script takes quite a long time. Subset of those 10000 passwords are collected in `xato-net-10-million-passwords-10.txt`. To test brute force faster, run
+The script takes quite a long time. Subset of those 10000 passwords are collected in `xato-net-10-million-passwords-every-44th-of-10000.txt`. To test brute force with a subset of passwords, run
 
 ```sh
-python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-10.txt
+python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-every-44th-of-10000.txt
 ```
 
 To fix this issue the application should be updated to limit login attempts.
+[comment]: <> (TODO: Login attempt limiter.)
 
 The developer should also update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
