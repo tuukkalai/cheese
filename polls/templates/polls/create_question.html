@@ -15,29 +15,26 @@
             name="username"
             value="{{ user.username|default:'not logged in' }}"
         \>
+        <div id="choices">
+            <label for="choiceField-1">Choices</label>
 
-    </fieldset>
-    <fieldset id="choices">
-        <label for="choiceField-1">Choices</label>
+            <input
+                type="text"
+                class="choiceField"
+                id="choiceField-1"
+                name="choiceField-1"
+                placeholder="42"
+                required="required"
+            />
 
-        <input
-            type="text"
-            class="choiceField"
-            id="choiceField-1"
-            name="choiceField-1"
-            placeholder="42"
-            required="required"
-        />
-
-    </fieldset>
-    <fieldset>
-        <button id="newChoice">+ Add another choice</button>
-        <br />
-        <input
-            type="submit"
-            class="button-primary"
-            value="Create question"
-        />
+        </div>
+    <button id="newChoice">+ Add another choice</button>
+    <br />
+    <input
+        type="submit"
+        class="button-primary"
+        value="Create question"
+    />
     </fieldset>
 </form>
 {% endblock %}
@@ -45,15 +42,14 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         let addChoiceBtn = document.getElementById('newChoice');
-        let i = document.querySelectorAll('.choiceField').length;
+        let numberOfChoices = document.querySelectorAll('.choiceField').length;
         addChoiceBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            i += 1;
-            console.log(i);
+            numberOfChoices += 1;
             let newInput = document.createElement('input');
             newInput.setAttribute('type', 'text');
-            newInput.setAttribute('id', `choiceField-${i}`);
-            newInput.setAttribute('name', `choiceField-${i}`);
+            newInput.setAttribute('id', `choiceField-${numberOfChoices}`);
+            newInput.setAttribute('name', `choiceField-${numberOfChoices}`);
             newInput.setAttribute('required', 'required');
             document.getElementById('choices').appendChild(newInput);
         });

@@ -1,4 +1,3 @@
-import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -24,7 +23,14 @@ def index(request):
 	return HttpResponseRedirect('login')
 
 def detail(request, question_id):
+	print('DETAIL')
 	question = get_object_or_404(Question, pk=question_id)
+	choices = Choice.objects.filter(question__pk=question_id)
+	print(question)
+	print(choices)
+	print(Vote.objects.filter(choice__in=choices))
+	if len(Vote.objects.filter(voter=request.user.id,choice__in=choices)) > 0:
+		return results(request, question_id)
 	return render(request, 'polls/detail.html', {'question': question})
 
 def results(request, question_id):
@@ -40,17 +46,6 @@ def create(request):
 def vote(request, question_id):
 	"""With get_object_or_404 an 404 error would be shown if Question with given id is not found."""
 	
-	# question = get_object_or_404(Question, pk=question_id)
-	question = Question.objects.get(pk=question_id)
-	print('Question to be voted', question)
-	voter = User.objects.get(pk=request.user.id)
-	print('Voter', voter)
-	print('request', request)
-	print('choice', Choice.objects.get(pk=request.GET['choice']))
-
-	# if Vote.objects.get(user_id=voter, question_id=question):
-		# print('---------------- yes -----------------------')
-
 	try:
 		"""
 		Method POST should be used when user inputs interacts with database.
@@ -64,8 +59,15 @@ def vote(request, question_id):
 		Doesn't matter which question id is set in the URL.
 		"""
 
-		# selected_choice = question.choice_set.get(pk=request.POST['choice'])
-		selected_choice = Choice.objects.get(pk=request.GET['choice'])
+		question = Question.objects.get(pk=question_id)
+		voter = User.objects.get(pk=request.user.id)
+		choice = Choice.objects.get(pk=request.GET['choice'])
+		# print('request', request)
+		# print('Question to be voted', question)
+		# print('Voter', voter)
+		# print('choice', choice)
+
+		new_vote = Vote.objects.create(choice=choice, voter=voter)
 
 	except (KeyError, Choice.DoesNotExist):
 		return render(request, 'polls/detail.html', {
@@ -73,8 +75,8 @@ def vote(request, question_id):
 			'error_message': "You didn't select a choice.",
 		})
 	else:
-		selected_choice.votes = F('votes') + 1 # Avoiding race conditions with F
-		selected_choice.save()
+		choice.votes = len(Vote.objects.filter(choice=choice))
+		choice.save()
 		return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 @csrf_exempt

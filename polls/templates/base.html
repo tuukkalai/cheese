@@ -16,6 +16,9 @@
         <div class="container">
             <a class="logo" href="{% url 'polls:index' %}">🧀</a>
             <ul class="navigation-list float-right">
+                {% if user.is_authenticated %}
+                <li><span>Hi {{ user.username }}!</span></li>
+                {% endif %}
                 <li><a class="button" href="{% url 'polls:create' %}">Create poll</a></li>
                 <li><a class="button" href="{% url 'polls:index' %}">Home</a></li>
                 {% if user.is_authenticated %}
@@ -28,14 +31,6 @@
     </nav>
     <div class="container">
         {% block content %}{% endblock %}
-    </div>
-    <div class="container dev">
-        <h3>Dev section</h3>
-        <pre><code>
-username: {{ user.username|default:'not logged in' }}
-question_list: {{ question_list|default:'[]'}}
-users_questions: {{ users_questions|default:'[]'}}
-        </code></pre>
     </div>
     <footer class="footer">
         <div class="container">

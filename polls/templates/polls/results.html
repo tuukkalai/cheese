@@ -13,7 +13,8 @@
     <tbody>
     {% for choice in question.choice_set.all %}
         <tr>
-            <td>{{ choice.choice_text }}</td><td>{{ choice.votes }}</td>
+            <td>{{ choice.choice_text }}</td>
+            <td>{{ choice.votes }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -21,5 +22,4 @@
 {% else %}
 <p>No choices for this question</p>
 {% endif %}
-<a href="{% url 'polls:detail' question.id %}">Vote again</a>
 {% endblock %}

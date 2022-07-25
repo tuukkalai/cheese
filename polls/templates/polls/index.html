@@ -4,26 +4,26 @@
 <h1>Polls app</h1>
 <p>Select poll from the listing and vote.</p>
 
-    <h2>All polls</h2>
-    {% if question_list %}
-    <ul>
-    {% for question in question_list %}
-        {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
-        <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+<h2>All polls</h2>
+{% if question_list %}
+<ul>
+{% for question in question_list %}
+    {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
+    <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
 
-<h2>User's Polls</h2>
+<h2>My polls</h2>
 {% if users_questions %}
-    <ul>
-    {% for question in users_questions %}
-        {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
-        <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
+<ul>
+{% for question in users_questions %}
+    {#<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>#}
+    <li><a href="/{{ question.id }}">{{ question.question_text }}</a></li>
+{% endfor %}
+</ul>
 {% else %}
-    <p>No polls available.</p>
+<p>No polls available.</p>
 {% endif %}
 
 {% endblock %}
