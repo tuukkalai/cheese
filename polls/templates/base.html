@@ -29,10 +29,22 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
-    <div class="container">
+    <div class="container dev">
         <h3>Dev section</h3>
-        username: {{ user.username|default:'not logged in' }}
+        <pre><code>
+username: {{ user.username|default:'not logged in' }}
+question_list: {{ question_list|default:'[]'}}
+users_questions: {{ users_questions|default:'[]'}}
+        </code></pre>
     </div>
+    <footer class="footer">
+        <div class="container">
+                <p><em>It's called Cheese, not because it's about cheese.<br/>
+                    It's called Cheese because of the holes!</em></p>
+            <span>Copyright<!-- --> © <!-- -->2022<!-- --> <a class="Link" href="https://github.com/tuukkalai" rel="noopener" target="_blank">Tuukka Laitinen</a>.</span>
+        </div>
+    </footer>
+
     {% block javascript %}{% endblock %}
 </body>
 </html>

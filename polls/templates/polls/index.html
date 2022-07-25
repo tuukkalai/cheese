@@ -2,12 +2,8 @@
 
 {% block content %}
 <h1>Polls app</h1>
-<blockquote>
-    <p><em>It's called Cheese, not because it's only about cheese. It's called Cheese because of the holes!</em></p>
-</blockquote>
 <p>Select poll from the listing and vote.</p>
 
-{% if user.username == 'admin' %}
     <h2>All polls</h2>
     {% if question_list %}
     <ul>
@@ -17,7 +13,6 @@
     {% endfor %}
     </ul>
     {% endif %}
-{% endif %}
 
 <h2>User's Polls</h2>
 {% if users_questions %}
@@ -31,16 +26,4 @@
     <p>No polls available.</p>
 {% endif %}
 
-<hr />
-
-<h2>Create new poll</h2>
-<form action="{% url 'polls:question' %}" method="POST">
-    {# {% csrf_token %} #}
-    <fieldset>
-        <label for="questionField">Question</label>
-        <input type="text" placeholder="Ham or cheese on top?" id="questionField" name="questionField" />
-        <input type="hidden" name="username" value="{{ user.username }}" />
-        <input class="button-primary" type="submit" value="Create question" />
-    </fieldset>
-</form>
 {% endblock %}

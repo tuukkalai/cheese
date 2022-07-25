@@ -42,10 +42,11 @@ def vote(request, question_id):
 	
 	# question = get_object_or_404(Question, pk=question_id)
 	question = Question.objects.get(pk=question_id)
-	print(question)
+	print('Question to be voted', question)
 	voter = User.objects.get(pk=request.user.id)
-	print(voter)
-	print(Choice.objects.get(pk=request.choice.id))
+	print('Voter', voter)
+	print('request', request)
+	print('choice', Choice.objects.get(pk=request.GET['choice']))
 
 	# if Vote.objects.get(user_id=voter, question_id=question):
 		# print('---------------- yes -----------------------')
@@ -72,8 +73,7 @@ def vote(request, question_id):
 			'error_message': "You didn't select a choice.",
 		})
 	else:
-		# Avoiding race conditions with F
-		selected_choice.votes = F('votes') + 1
+		selected_choice.votes = F('votes') + 1 # Avoiding race conditions with F
 		selected_choice.save()
 		return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
