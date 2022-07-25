@@ -83,11 +83,23 @@ def question(request, question_id=-1):
 		question = request.POST.get('questionField')
 		username = request.POST.get('username')
 
-		new_question = Question.objects.create(
+		Question.objects.create(
 			owner=User.objects.get(username=username),
 			question_text=question,
 			pub_date=timezone.now()
 		)
+
+		choices = []
+		for key, value in request.POST.items():
+			if key[:12] == 'choiceField-':
+				choices.append(value)
+
+		for choice in choices:
+			Choice.objects.create(
+				question=Question.objects.get(question_text=question),
+				choice_text=choice
+			)
+		
 		# query = "INSERT INTO polls_question (question_text, pub_date) " \
 			# "VALUES ('" + question + "', '" + str(timezone.now()) + "');"
 		# new_question = Question.objects.raw(query)

@@ -1,12 +1,60 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <form action="{% url 'polls:question' %}" method="POST">
     {# {% csrf_token %} #}
     <fieldset>
         <label for="questionField">Question</label>
-        <input type="text" placeholder="Where are we going?" id="questionField" name="questionField" />
-        <input class="button-primary" type="submit" value="Create question">
+        <input
+            type="text"
+            id="questionField"
+            name="questionField"
+            placeholder="Where are we going?"
+        />
+        <input
+            type="hidden"
+            name="username"
+            value="{{ user.username|default:'not logged in' }}"
+        \>
+
+    </fieldset>
+    <fieldset id="choices">
+        <label for="choiceField-1">Choices</label>
+
+        <input
+            type="text"
+            class="choiceField"
+            id="choiceField-1"
+            name="choiceField-1"
+            placeholder="42"
+            required="required"
+        />
+
+    </fieldset>
+    <fieldset>
+        <button id="newChoice">+ Add another choice</button>
+        <br />
+        <input
+            type="submit"
+            class="button-primary"
+            value="Create question"
+        />
     </fieldset>
 </form>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let addChoiceBtn = document.getElementById('newChoice');
+        let i = document.querySelectorAll('.choiceField').length;
+        addChoiceBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            i += 1;
+            console.log(i);
+            let newInput = document.createElement('input');
+            newInput.setAttribute('type', 'text');
+            newInput.setAttribute('id', `choiceField-${i}`);
+            newInput.setAttribute('name', `choiceField-${i}`);
+            newInput.setAttribute('required', 'required');
+            document.getElementById('choices').appendChild(newInput);
+        });
+    });
+</script>
 {% endblock %}
