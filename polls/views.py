@@ -23,12 +23,8 @@ def index(request):
 	return HttpResponseRedirect('login')
 
 def detail(request, question_id):
-	print('DETAIL')
 	question = get_object_or_404(Question, pk=question_id)
 	choices = Choice.objects.filter(question__pk=question_id)
-	print(question)
-	print(choices)
-	print(Vote.objects.filter(choice__in=choices))
 	if len(Vote.objects.filter(voter=request.user.id,choice__in=choices)) > 0:
 		return results(request, question_id)
 	return render(request, 'polls/detail.html', {'question': question})
@@ -44,7 +40,7 @@ def create(request):
 @csrf_exempt
 @login_required
 def vote(request, question_id):
-	"""With get_object_or_404 an 404 error would be shown if Question with given id is not found."""
+	""" Voting on some other users behalf is possible with link http://127.0.0.1:8000/2/results/vote/?choice=7&username=bob """
 	
 	try:
 		"""
@@ -55,17 +51,14 @@ def vote(request, question_id):
 		(https://docs.djangoproject.com/en/4.0/intro/tutorial04/#write-a-minimal-form)
 		
 		Following variable selected_choice is gained with choice parameter in the request.
-		-> Vote could be added with just an URL (e.g. /2/results/vote/?choice=6).
+		-> Vote could be added with just an URL (e.g. /2/results/vote/?choice=6&username=alice).
 		Doesn't matter which question id is set in the URL.
 		"""
 
 		question = Question.objects.get(pk=question_id)
-		voter = User.objects.get(pk=request.user.id)
+		# voter = User.objects.get(pk=request.user.id) # Should use this to track votes made by user logged in
+		voter = User.objects.get(username=request.GET['username'])
 		choice = Choice.objects.get(pk=request.GET['choice'])
-		# print('request', request)
-		# print('Question to be voted', question)
-		# print('Voter', voter)
-		# print('choice', choice)
 
 		new_vote = Vote.objects.create(choice=choice, voter=voter)
 
