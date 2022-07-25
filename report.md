@@ -2,44 +2,28 @@
 
 Link to project repo: <https://github.com/tuukkalai/cheese>
 
-## Prerequisites
+## Checklist
 
-- [Python >3.8](https://www.python.org/downloads/)
+- [ ] Five different flaws from OWASP Top ten list (selected 2021 list)
+- [x] Application should have a backend (Python + Django)
+- [x] Saved to public repo
+- [ ] 1000 word report
 
-## Running the project
+## Scoring
 
-### 1. Clone the repo
+The rubric for the scores are as follows:
 
-```sh
-git clone https://github.com/tuukkalai/cheese.git && cd cheese
-```
-
-### 2. Create and activate Python virtual environment
-
-```sh
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install required packages
-
-```sh
-pip install -r requirements.txt
-```
-
-### 4. Start the application
-
-```sh
-python manage.py runserver
-```
-
-And open browser with given URL (by default [http://127.0.0.1:8000](http://127.0.0.1:8000))
+- **Excellent**: No issues or only cosmetic issues
+- **Good**: The flaw and the fix are correctly done. Minor issues in descriptions.
+- **Average**: The flaw described adequately and the fix fixes the problem. Minor misunderstanding of the underlying mechanism. The description is too vague but ultimately correct.
+- **Passable**: The flaw is identified correctly, the fix partially corrects the problem. The underlying problem and the effect of the fix is somewhat misuderstood.
+- **Failed**: The flaw is missing, or otherwise inappropriate
 
 ## Flaws
 
-### Flaw 1: [Settings include exposed environmental variable `SECRET_KEY`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L26)
+### Flaw 1: [Cryptographic failure](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
 
-Exposed environmental secret can be seen as a [Cryptographic failure](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/). The value is not exposed within the application, but with searching the web with couple of keywords attacker might find this repository and use the key to gain control of the complete application.
+[Exposed environmental secret](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L26) can be seen as a Cryptographic failure. The value is not exposed within the application, but with searching the web with couple of keywords attacker might find this repository and use the key to gain control of the complete application.
 
 To fix this issue,
 
@@ -48,7 +32,7 @@ To fix this issue,
   3. add `.env`-file to `.gitignore`
   4. add `SECRET_KEY` to environmental variables in production system
 
-### Flaw 2: [SQL Injection](https://owasp.org/Top10/A03_2021-Injection/)
+### Flaw 2: [Injection](https://owasp.org/Top10/A03_2021-Injection/)
 
 Adding query directly with raw-method and insecure way of adding user input in query.
 
@@ -56,13 +40,13 @@ Question ID is extracted from URL and injected directly to query. This allows at
 
 E.g. following URL prints admin users password hash on the screen: <http://127.0.0.1:8000/question/2%20AND%201%3D2%20UNION%20SELECT%20username,%20password,%20id,%20is_superuser%20FROM%20auth_user%20WHERE%20is_superuser%3D1/>
 
-[[ how to fix it... ]]
+[comment]: <> (TODO: Suggested fix for SQL Injection vulnerability.)
 
 ### Flaw 3: [Identification and authentication failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
 
 "Permits brute force or other automated attacks."
 
-Brute forcing is available for logging in, and password for user 'admin' is not that hard to guess.
+Brute forcing is available for logging in, and password for user `admin` is not that hard to guess.
 
 To test this, activate the virtual environment and run command (assuming the application is running on localhost port 8000):
 
@@ -77,11 +61,16 @@ python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-every
 ```
 
 To fix this issue the application should be updated to limit login attempts.
+
 [comment]: <> (TODO: Login attempt limiter.)
 
 The developer should also update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
-...
+### Flaw 4: [this and that](http://example.com)
+
+exact source link pinpointing flaw 4...
+description of flaw 4...
+how to fix it...
 
 ### Flaw 5: [this and that](http://example.com)
 

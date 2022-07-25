@@ -120,6 +120,6 @@ def question(request, question_id=-1):
 			query = f"SELECT * FROM polls_question WHERE id={question_id};"
 			questions = Question.objects.raw(query)
 
-		return render(request, 'polls/index.html', {'latest_question_list': questions})
+		return render(request, 'polls/index.html', {'users_questions': questions})
 	
 	return HttpResponse('Nothing was found/added')
