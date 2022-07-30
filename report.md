@@ -66,7 +66,7 @@ To fix this issue the application should be updated to limit login attempts.
 
 The developer should also update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
-### Flaw 4: [Identification and Authentication Failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
+### Flaw 4: [Broken access control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
 
 In the application user can vote for given choices. Each question has set of available choices. User can vote within single question only once. Except by crafting the URL with different set of attributes.
 
@@ -74,8 +74,18 @@ In [`views.py]`(https://github.com/tuukkalai/cheese/blob/main/cheese/polls/views
 
 To fix the issue, commented section on top of given line should be used.
 
-### Flaw 5: [this and that](http://example.com)
+### Flaw 5: [Security misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
 
-exact source link pinpointing flaw 5...
-description of flaw 5...
-how to fix it...
+[`settings.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L29) contain feature flag set by default to `DEBUG = True`.
+
+Leaving that setting as is, attacker will be able view detailed error messages while poking the application. Detailed error message might reveal alternative possibilities to penetrate the system.
+
+To fix this issue, the developer should enforce using environmental variables, that can be hidden from others. Popular practise among informed developers is to use dotenv package/extension/library. In Python the package [python-dotenv](https://pypi.org/project/python-dotenv/) can be utilized to help with environemntal values.
+
+## Conclusion
+
+Something something about following command to check django app readiness for deployment
+
+```sh
+python manage.py check --deploy
+```
