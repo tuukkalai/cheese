@@ -56,7 +56,7 @@ Link to project repo: <https://github.com/tuukkalai/cheese>
 
 ### Flaw 1: [Cryptographic failure](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
 
-https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L30
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L30
 
 Exposed environmental secret can be seen as a Cryptographic failure. Django utilizes `SECRET_KEY` value to cryptographically sign values handled by the application, for example hidden form field values. With cryptografic signs Django detects tampering of data. If an attacker gains control of the `SECRET_KEY`, he/she might be able to sign any data and gain control of the application. Without Django detecting the tampering of the data.
 
@@ -66,14 +66,14 @@ To fix this issue the developer should hide the secret key and store it in safe 
 
 `python-dotenv` package is already introduced to the project. Next steps are to enable the package:
 
-  1. load dotenv (uncomment `load_dotenv()` in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L20))
-  2. save the `SECRET_KEY` to `.env`-file (uncomment row 1 in [`.env`](https://github.com/tuukkalai/cheese/blob/main/.env#L1))
+  1. load dotenv (uncomment `load_dotenv()` in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L20))
+  2. save the `SECRET_KEY` to `.env`-file (uncomment row 1 in [`.env`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L20))
   3. add `.env`-file to `.gitignore`
-  4. load the `SECRET_KEY` value from `.env` (toggle commenting on [rows 30 & 31 in `cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L30-31))
+  4. load the `SECRET_KEY` value from `.env` (toggle commenting on [rows 30 & 31 in `cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L30-L31))
 
 ### Flaw 2: [Injection](https://owasp.org/Top10/A03_2021-Injection/)
 
-https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L113-116
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L113-L116
 
 The application fetches poll questions from the database using `question_id` from URL parameter in database query. Attacker might notice this solution and craft malicious URL with suitable parameters to extract sensitive information from the database.
 
@@ -81,8 +81,8 @@ For example, following URL prints admin users password hash on the screen: <http
 
 To fix the issue using the out-of-the-box methods provided by Django:
 
-1. Comment out the parts with raw query data (`polls/views.py` lines [113-116](https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L113-116))
-2. Uncomment the following part (`polls/views.py` lines [118-120](https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L118-120))
+1. Comment out the parts with raw query data (`polls/views.py` lines [113-116](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L113-L116))
+2. Uncomment the following part (`polls/views.py` lines [118-120](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L118-L120))
 
 ### Flaw 3: [Identification and authentication failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
 
@@ -102,13 +102,13 @@ python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-every
 
 To fix this issue the application should be updated to limit login attempts. Developer might be able to create the feature themselves or they can import external package to handle faulty login attempts. One of these external packages mentioned is [`django-axes`](https://pypi.org/project/django-axes/). Currently `django-axes` is already installed to the project, and configured by adding relevant information mentioned in [django-axes documentation](https://django-axes.readthedocs.io/en/latest/index.html).
 
-To enable the feature, in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L37) change the [`AXES_ENABLED`] flag from `False` to `True`.
+To enable the feature, in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L37) change the [`AXES_ENABLED`] flag from `False` to `True`.
 
 Personally I would add relevant `AXES_ENABLED` flag to environmental variables, and enable it only in production environment. The package blocks the IP address in the event of false logins. Example changes are commented in
 
-https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L37
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L37-L38
 
-https://github.com/tuukkalai/cheese/blob/main/.env.py#L3
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.env#L3
 
 The developer should also update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
@@ -118,13 +118,13 @@ In the application user can vote for given choices. Each question has set of ava
 
 Design flaw in the application shows that the vote is registered to user mentioned in URL. Sending GET request with another username allows malicious user to register vote on behalf of other users. Or even create multiple votes from himself/herself.
 
-https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L46-61
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L46-L61
 
-To fix the issue, comment [line 60](https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L60) and uncomment [line 59](https://github.com/tuukkalai/cheese/blob/main/polls/views.py#L59) in `polls/views.py`.
+To fix the issue, comment [line 60](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L60) and uncomment [line 59](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L59) in `polls/views.py`.
 
 ### Flaw 5: [Security misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
 
-[`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/settings.py#L34) contain feature flag set by default to `DEBUG = True`.
+[`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L34) contain feature flag set by default to `DEBUG = True`.
 
 Leaving that setting as is, attacker will be able view detailed error messages while poking the application. Detailed error message might reveal alternative possibilities to penetrate the system.
 
