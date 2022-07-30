@@ -60,9 +60,9 @@ The script takes quite a long time. Subset of those 10000 passwords are collecte
 python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-every-44th-of-10000.txt
 ```
 
-To fix this issue the application should be updated to limit login attempts.
+To fix this issue the application should be updated to limit login attempts. Many of the application frameworks, such as Django, offer different packages to enable functionalities outside out-of-the-box solutions. Developer might be able to create the feature themselves or they can configure extension package to handle the issue. With Django, one of the extensions is [`django-axes`](https://pypi.org/project/django-axes/). Currently django-axes is already installed to the project, and configured by adding relevant information mentioned in [django-axes documentation](https://django-axes.readthedocs.io/en/latest/index.html). To enable the feature, changing the [`AXES_ENABLED`] flag from `False` to `True`.
 
-[comment]: <> (TODO: Login attempt limiter.)
+Personally I would add relevant `AXES_ENABLED` flag to environmental variables, and disable it in development environment. The package blocks the IP address in the event of false logins.
 
 The developer should also update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
@@ -70,7 +70,7 @@ The developer should also update default passwords in any frameworks used in app
 
 In the application user can vote for given choices. Each question has set of available choices. User can vote within single question only once. Except by crafting the URL with different set of attributes.
 
-In [`views.py]`(https://github.com/tuukkalai/cheese/blob/main/cheese/polls/views.py#L59) user is able to make a vote on other users behalf by setting another user's username in URL. User can also add multiple votes for his/her account.
+In [`views.py`](https://github.com/tuukkalai/cheese/blob/main/cheese/polls/views.py#L59) user is able to make a vote on other users behalf by setting another user's username in URL. User can also add multiple votes for his/her account.
 
 To fix the issue, commented section on top of given line should be used.
 

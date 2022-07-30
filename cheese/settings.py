@@ -28,6 +28,8 @@ SECRET_KEY = 'django-insecure-)=+%7#)v9@abw%1v29&t!g#*vl^z_b3!ifmysn!60r_g7*w0^r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+AXES_ENABLED = False
+
 ALLOWED_HOSTS = []
 
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'cheese.urls'
