@@ -136,6 +136,8 @@ To fix this issue, the developer should set the `DEBUG` value to `False` in prod
 
 Similarly as with `SECRET_KEY` and `AXES_ENABLED` variables, I would add value for `DEBUG` as an environmental variable. This way the helpful comments are visible in development environment, but hidden in production environment.
 
+https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L35
+
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.env#L2
 
 ## Additional considerations when working with Django
