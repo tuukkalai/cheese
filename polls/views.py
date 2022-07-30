@@ -56,7 +56,7 @@ def vote(request, question_id):
 		"""
 
 		question = Question.objects.get(pk=question_id)
-		# voter = User.objects.get(pk=request.user.id) # Should use this to track votes made by user logged in
+		# voter = User.objects.get(pk=request.user.id)
 		voter = User.objects.get(username=request.GET['username'])
 		choice = Choice.objects.get(pk=request.GET['choice'])
 
@@ -103,10 +103,10 @@ def question(request, question_id=-1):
 
 	if request.method == 'GET':
 		"""
-		Flaw #1: SQL Injection.
+		Flaw #2: SQL Injection.
 		Adding query directly with raw-method and insecure way of adding user input in query.
 
-		Question ID is extracted from URL and injected directly to query.
+		Question ID is extracted from URL parameter and injected directly to query.
 		Following URL prints admin users password hash on the screen:
 		http://127.0.0.1:8000/question/2%20AND%201%3D2%20UNION%20SELECT%20username,%20password,%20id,%20is_superuser%20FROM%20auth_user%20WHERE%20is_superuser%3D1/
 		"""
@@ -114,6 +114,10 @@ def question(request, question_id=-1):
 		if question_id != -1:
 			query = f"SELECT * FROM polls_question WHERE id={question_id};"
 			questions = Question.objects.raw(query)
+
+		# questions = Question.objects.all()
+		# if question_id != -1:
+			# questions = Question.objects.get(id=question_id)
 
 		return render(request, 'polls/index.html', {'users_questions': questions})
 	
