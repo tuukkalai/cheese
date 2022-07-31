@@ -1,62 +1,24 @@
-# Cyber Security Base 2022 - Project I
+Link to project repo: https://github.com/tuukkalai/cheese
 
-Ths project is part of University of Helsinki course ["Cyber Security Base"](https://cybersecuritybase.mooc.fi/). The aim of this repository is to create an application with multiple security holes.
+Running the application
 
-```
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!                                                                             !!
-!!  Do not use this repository as a template for your next Django-application  !!
-!!                                                                             !!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-```
-
-## Running the application
-
-### 0. Prerequisites
-
-- [Python ^3.8](https://www.python.org/downloads/)
-
-### 1. Clone the repo
-
-```sh
-git clone https://github.com/tuukkalai/cheese.git && cd cheese
-```
-
-### 2. Create and activate Python virtual environment
-
-```sh
+0. Python 3.8 or later installed
+1. Clone the repo: git clone https://github.com/tuukkalai/cheese.git && cd cheese
+2. Create and activate Python virtual environment:
 python3 -m venv venv
 source venv/bin/activate
-```
+3. Install required packages: pip install -r requirements.txt
+4. Start the application: python manage.py runserver
+and open browser with given URL (by default http://127.0.0.1:8000)
 
-### 3. Install required packages
+Testing credentials
 
-```sh
-pip install -r requirements.txt
-```
+Username -- Password
+--
+bob -- squarepants
+alice -- W0nderLand!
 
-### 4. Start the application
-
-```sh
-python manage.py runserver
-```
-
-And open browser with given URL (by default [http://127.0.0.1:8000](http://127.0.0.1:8000))
-
-## Testing credentials
-
-|Username|Password|
-|:--|:--|
-|bob|squarepants|
-|alice|W0nderLand!|
-
----
-
-## Report
-
-Link to project repo: <https://github.com/tuukkalai/cheese>
-
-### Flaw 1: [Cryptographic failure](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
+Flaw 1: Cryptographic failure (https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
 
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L30
 
