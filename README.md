@@ -146,7 +146,7 @@ https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0c
 
 ## Additional considerations when working with Django
 
-Django provides great documentation and great tools to check if the application is ready for production. Using these helpers should be a no brainer to all developers.
+Django provides great documentation and great tools to check if the application is ready for deployment in production. Using these helpers should be a no brainer to all developers.
 
 One helpful command for checks is
 

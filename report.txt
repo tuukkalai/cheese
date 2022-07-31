@@ -14,9 +14,10 @@ and open browser with given URL (by default http://127.0.0.1:8000)
 Testing credentials
 
 Username -- Password
---
 bob -- squarepants
 alice -- W0nderLand!
+
+---
 
 Flaw 1: Cryptographic failure (https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
 
@@ -28,16 +29,18 @@ The `SECRET_KEY` value is not exposed within the application, but with searching
 
 Now that the `SECRET_KEY` is committed in this repository's history, I would update the key, and store it safely outside git, before deploying the app in production.
 
-To fix the cryptographic issue the developer should hide the secret key and store it in safe place. The [`python-dotenv`](https://pypi.org/project/python-dotenv/) package can be used to pass the secret value to the application while storing the value on a local machine.
+To fix the cryptographic issue the developer should hide the secret key and store it in safe place. The `python-dotenv` (https://pypi.org/project/python-dotenv/) package can be used to pass the secret value to the application while storing the value on a local machine.
 
 `python-dotenv` package is already introduced to the project. Next steps are to enable the package:
 
-  1. load dotenv (uncomment `load_dotenv()` in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L20))
-  2. save the `SECRET_KEY` to `.env`-file (uncomment row 1 in [`.env`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.env#L1))
-  3. add `.env`-file to `.gitignore` (uncomment row 2 in [`.gitignore`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.gitignore#L2))
-  4. load the `SECRET_KEY` value from `.env` (toggle commenting on [rows 30 & 31 in `cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L30-L31))
+  1. load dotenv (uncomment `load_dotenv()` in `cheese/settings.py` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L20))
+  2. save the `SECRET_KEY` to `.env`-file (uncomment row 1 in `.env` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.env#L1))
+  3. add `.env`-file to `.gitignore` (uncomment row 2 in `.gitignore` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.gitignore#L2))
+  4. load the `SECRET_KEY` value from `.env` (toggle commenting on rows 30 & 31 in `cheese/settings.py` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L30-L31))
 
-### Flaw 2: [Injection](https://owasp.org/Top10/A03_2021-Injection/)
+---
+
+Flaw 2: Injection (https://owasp.org/Top10/A03_2021-Injection/)
 
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L113-L116
 
@@ -47,32 +50,30 @@ For example, following URL prints admin users password hash on the screen: <http
 
 To fix the issue using the out-of-the-box methods provided by Django:
 
-1. Comment out the parts with raw query data (`polls/views.py` lines [113-116](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L113-L116))
-2. Uncomment the following part (`polls/views.py` lines [118-120](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L118-L120))
+1. Comment out the parts with raw query data (`polls/views.py` lines 113-116 (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L113-L116))
+2. Uncomment the following part (`polls/views.py` lines 118-120 (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L118-L120))
 
-### Flaw 3: [Identification and authentication failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
+---
+
+Flaw 3: Identification and authentication failures (https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
 
 Currently the application does not log or monitor login attempts. In case of false credentials, the login form simply notifies the user with faulty login credentials and re-renders the login page. Attacker could easily exploit this vulnerability by creating a script that tests multiple username and password combinations to brute force the credentials of some account.
 
 To visualise this, the `hackpassword.py` script is created in the root of the project. Run the script by activating the virtual environment and running command:
 
-```sh
 python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-10000.txt
-```
 
 The script is slow, but it takes a lot less time than cracking a safer password or than limiting the amount of possible attempts.
 
 A subset of those 10 000 most common passwords are collected in file `xato-net-10-million-passwords-every-44th-of-10000.txt`. To test brute force with a subset of passwords, run:
 
-```sh
 python hackpassword.py http://localhost:8000 xato-net-10-million-passwords-every-44th-of-10000.txt
-```
 
-To fix this issue the application should be updated to limit login attempts. Developer might be able to create the feature themselves or they can import external package to handle faulty login attempts. One of these external packages mentioned is [`django-axes`](https://pypi.org/project/django-axes/). `django-axes` logs the invalid login, and restricts login attempts from the IP address, if set threshold is exceeded.
+To fix this issue the application should be updated to limit login attempts. Developer might be able to create the feature themselves or they can import external package to handle faulty login attempts. One of these external packages mentioned is `django-axes` (https://pypi.org/project/django-axes/). `django-axes` logs the invalid login, and restricts login attempts from the IP address, if set threshold is exceeded.
 
-Currently `django-axes` is already installed to the project, and configured by adding relevant information mentioned in [django-axes documentation](https://django-axes.readthedocs.io/en/latest/index.html).
+Currently `django-axes` is already installed to the project, and configured by adding relevant information mentioned in django-axes documentation (https://django-axes.readthedocs.io/en/latest/index.html).
 
-To enable the feature, in [`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L37) change the [`AXES_ENABLED`] flag from `False` to `True`.
+To enable the feature, in `cheese/settings.py` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L37) change the [`AXES_ENABLED`] flag from `False` to `True`.
 
 Personally I would add relevant `AXES_ENABLED` flag to environmental variables, and enable it only in production environment, since the package blocks the IP address in the event of false logins. Example changes are commented in
 
@@ -82,19 +83,23 @@ https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0c
 
 Additional notification: Developers should update default passwords in any frameworks used in application. Developers should actively avoid using passwords found in password lists and same password in different places. Password managers are handy to manage multiple credentials.
 
-### Flaw 4: [Broken access control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+---
+
+Flaw 4: Broken access control (https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
 
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L58-L61
 
 In the application user can vote for given choices. Each question has predefined set of available choices. User can vote within single question only once. If the user has already voted for a question, opening the question redirects to the results. Design flaw in the application shows that the vote and voting user are identified only in the URL. Sending GET request with another username allows malicious user to register vote on behalf of other users. Or even create multiple votes from himself/herself by resending the GET request of the initial vote.
 
-To fix the issue, comment out [line 60](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L60) in `polls/views.py` where voter details are checked based on the username in the URL, and uncomment the previous line, [line 59](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L59) to enable identifying the voter based on the authenticated user making the request.
+To fix the issue, comment out line 60 (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L60) in `polls/views.py` where voter details are checked based on the username in the URL, and uncomment the previous line, line 59 (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/polls/views.py#L59) to enable identifying the voter based on the authenticated user making the request.
 
-### Flaw 5: [Security misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
+---
+
+Flaw 5: Security misconfiguration (https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
 
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L33-L34
 
-[`cheese/settings.py`](https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L34) contain feature flag set by default to `DEBUG = True`.
+`cheese/settings.py` (https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/cheese/settings.py#L34) contain feature flag set by default to `DEBUG = True`.
 
 Leaving that setting as is, attacker will be able view detailed error messages while poking the application. Detailed error messages might reveal alternative possibilities to penetrate the system for non-admin users.
 
@@ -106,12 +111,11 @@ https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0c
 
 https://github.com/tuukkalai/cheese/blob/3baa5bb5f5a80c1fb0aa31af99860d27966ca0cd/.env#L2
 
-## Additional considerations when working with Django
+---
+
+Additional considerations when working with Django
 
 Django provides great documentation and great tools to check if the application is ready for production. Using these helpers should be a no brainer to all developers.
 
-One helpful command for checks is
-
-```sh
+One helpful command for checks is:
 python manage.py check --deploy
-```
